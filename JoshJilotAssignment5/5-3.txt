@@ -1,0 +1,18 @@
+iaddq V, rB:
+
+Fetch:
+    - icode gets the opcode for iaddq
+    - ifun gets the function code for iaddq
+    - valP points to next instruction
+Decode:
+    - valB reads value from rB (input register) 
+Execute
+    - valC stores immediate value V
+    - valE stores result of valB + valC
+Memory 
+    - None
+Writeback
+    - destE stores destination register (rB)
+    - Stores result (valE) in destE (rB)
+PC Update
+    - PC is updated to point to next instruction

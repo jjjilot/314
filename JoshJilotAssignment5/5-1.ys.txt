@@ -1,0 +1,95 @@
+# Simulator: https://boginw.github.io/js-y86-64/
+
+# Execution begins at address 0
+.pos 0
+irmovq stack, %rsp      # Set up stack pointer
+call main       # Execute main program
+halt            # Terminate program
+
+main:   irmovq $0, %rdi
+irmovq $8, %rsi
+call sort
+ret
+
+# void swap(long *xp, long *yp) {
+#     long x = *xp;
+#     long y = *yp;
+#     *xp = y;
+#     *yp = x;
+# }
+swap:   mrmovq (%rdi), %rcx # x = *xp;
+mrmovq (%rbx), %rdx # y = *yp;
+rmmovq %rdx, (%rdi) # *xp = y;
+rmmovq %rcx, (%rbx) # *yp = x;
+ret
+
+# void sort(long *arr, long length) {
+#     long *iPtr = arr; // pointer to arr[i]
+#     for (long i = 0; i < length - 1; ++i) {
+#         long *minPtr = iPtr; // pointer to smallest value found so far in rest of arr
+#         long *jPtr = iPtr + 1; // pointer to arr[j]
+#         for (long j = i + 1; j < length ; ++j) {
+#             // update minPtr if array[j] < less than value at minPtr
+#             if (*jPtr < *minPtr) {
+#                 minPtr = jPtr;
+#             }
+# 
+#             ++jPtr; // increment array[j] pointer
+#         }
+# 
+#         // swap if a value was found smaller than that at iPtr
+#        if (minPtr != iPtr) {
+#             swap(minPtr, iPtr); 
+#         }
+# 
+#         ++iPtr; // increment array[i] pointer
+#     }
+# }
+sort:   irmovq $0, %r8 # i = 0
+rrmovq %rsi, %r11
+isubq $1, %r11 # store len - 1 for later
+jmp .L1
+
+.L1:     rrmovq %r8, %r9 # j = i
+iaddq $1, %r9 # j += 1
+rrmovq %rdi, %rbx # minPtr = iPtr
+rrmovq %rdi, %rdx # jPtr = iPtr
+iaddq $8, %rdx # iPtr += 1
+jmp .L2
+
+.L2:    mrmovq (%rdx), %rax
+mrmovq (%rbx), %r10
+subq %rax, %r10 # if jPtr < minPtr
+cmovg %rdx, %rbx # minPtr = jPtr
+iaddq $8, %rdx # jPtr += 1
+iaddq $1, %r9 # j += 1
+rrmovq %r9, %rax
+rrmovq %rsi, %r10
+subq %rax, %r10 # if j < len
+jge .L2 # run inner loop again
+jmp .L5 # else keep going
+
+
+.L3:     pushq %rcx
+pushq %rdx # backup registers
+call swap # call swap
+popq %rdx # restore registers
+popq %rcx
+jmp .L4 # check outer for loop
+
+.L4:    iaddq $8, %rdi # iPtr += 1
+iaddq $1, %r8 # i += 1
+rrmovq %r8, %rax
+rrmovq %r11, %r10
+subq %rax, %r10 # if i < len - 1
+jge .L1 # repeat loop
+
+.L5:    rrmovq %rbx, %rax
+rrmovq %rdi, %r10
+subq %rax, %r10 # if minPtr != iPtr
+jne .L3 # call swap
+jmp .L4 # else run outer loop again
+
+# Stack starts here and grows to lower addresses
+.pos 0x200
+stack:

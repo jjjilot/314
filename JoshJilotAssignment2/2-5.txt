@@ -1,0 +1,17 @@
+Convert the following hex values to decimal assuming that they are 
+encoded as IEEE 754 single-precision floating-point numbers:
+
+a. (5) 0x80000000: -0.0
+1000 0000 0000 0000 0000 0000 0000 0000
+MSB is 1 and all others are zero so number is negative but also 0.
+
+b. (5) 0x3FE00000: 1.75
+0011 1111 1110 0000 0000 0000 0000 0000
+exponent is -127 + 127 = 0 so mantissa will be multiplied by 1 (2^0).
+mantissa is 1 + 1/2 + 21/4 = 1.75
+
+c. (5) 0xC3140000: -148.0
+1100 0011 0001 0100 0000 0000 0000 0000
+MSB is so number is negative.
+exponent is -127 + 128 + 4 + 2 = 7 so mantissa will be multiplied by 128 (2^7).
+mantissa is 1 + 1/8 + 1/32 = 37/32

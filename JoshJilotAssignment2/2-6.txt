@@ -1,0 +1,20 @@
+Convert the following decimal numbers to hex encoded as IEEE 754 
+single-precision floating-point numbers. 
+
+a. (5) 1.0: 0x3F800000
+number is positive so 0 as MSB.
+mantissa * exponent is 1 so all all exponent bits but the MSB will be 1s
+and mantissa will be all 0s (2^(-127+127) * (1 + 0) = 1).
+0011 1111 1000 0000 0000 0000 0000 0000
+
+b. (5) -16.5: 0xC1840000
+number is negative so 1 as MSB.
+exponent should equal 4 and mantissa should equal .5/16 (2^4 * (1 + (0.5 / 16))) = 16.5
+1100 0001 1000 0100 0000 0000 0000 0000
+
+c. (5) 314.25: 0x439D2000
+number is positive so 0 as MSB.
+314.5 = 0b100111010.01
+shift floating point by 2^8 so exponent is 8
+mantissa is 10011101001 + 0s
+0100 0011 1001 1101 0010 0000 0000 0000

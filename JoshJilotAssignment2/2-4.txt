@@ -1,0 +1,15 @@
+Convert the following hex values to decimal assuming that they are 
+stored as 32-bit 2s complement integers:
+
+a. (5) 0x000000C4: 196
+0000 0000 0000 0000 0000 0000 1100 0100
+2^2 + 2^6 + 2^7
+
+b. (5) 0xFFFFFEC6: -314
+flip bits and subtract one because MSB is 1.
+0000 0000 0000 0000 0000 0001 0011 1001
+- (2^0 + 2^3 + 2^4 + 2^5 + 2^8 + 1)
+
+c. (5) 0xFFFFFFFF: -1
+flip bits and subtract one because MSB is 1.
+0 - 1
