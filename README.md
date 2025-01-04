@@ -10,4 +10,4 @@ Upon successful completion of the course, students will have acquired the follow
   - be able to optimize C code with respect to instruction counts, unpredictable branches, and memory-access patterns.
   - be able to implement a basic direct-mapped caching solution.
 
-Taught by Dr. Eric D. Wills at University of Oregon
+Taught by Dr. Eric D. Wills at University of Oregon.
